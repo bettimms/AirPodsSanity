@@ -28,6 +28,8 @@ class MenuBar
 
 		self.CreateStatusItem()
 		self.ToggleShowInDock()
+        
+        self._StatusBarItem.isVisible = true
 	}
 
 	private func CreateStatusItem()
@@ -73,10 +75,27 @@ class MenuBar
 		self.AddItems(menu: __Menu, items: self._OutputDeviceItems, label: NSLocalizedString("MenuBar.OutputDevices", comment: ""))
 
 		__Menu.addItem(NSMenuItem.separator())
+        __Menu.addItem(self.hideMenuItem())
 		__Menu.addItem(self.CreateQuitApplicationItem())
 
 		self._StatusBarItem.menu = __Menu
 	}
+    
+    private func hideMenuItem() -> NSMenuItem
+    {
+            let __MenuItem = NSMenuItem()
+
+            __MenuItem.title = NSLocalizedString("MenuBar.HideFromStatusBar", comment: "")
+            __MenuItem.target = self
+            __MenuItem.action = #selector(onHideIconFromStatusBar(_:))
+        
+        return __MenuItem
+    }
+    
+    @objc private func onHideIconFromStatusBar(_ sender: NSMenuItem)
+    {
+        self._StatusBarItem.isVisible = false
+    }
 
 	private func CreateShowInDockItem(preferences: Preferences) -> NSMenuItem
 	{
